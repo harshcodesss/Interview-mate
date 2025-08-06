@@ -39,11 +39,9 @@ const interviewSchema = new Schema({
     ],
     startedAt: {
         type: Date,
-        required: true,
     },
     endedAt: {
-        type: Date,
-        required: true,
+        type: Date
     },
     feedbackId: {
         type: Schema.Types.ObjectId,

@@ -1,14 +1,11 @@
-// id String pk
-//   username String
-//   email String
-//   fullName String
-//   avatar String
-//   coverImage String
-//   watchHistory ObjectId[] videos
-//   password String
-//   refreshToken String
-//   createdAt Date
-//   updatedAt Date
+// id string pk
+//   fullname string
+//   username string
+//   email string
+//   password string
+//   avatar string
+//   Interviews ObjectId[] interviews
+//   refreshToken string
 
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt"
@@ -43,7 +40,12 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-    },
+    },interviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Interview",
+      }
+    ],
     refreshToken: {
       type: String,
     },
