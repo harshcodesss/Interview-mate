@@ -47,15 +47,11 @@ const startInterview = asyncHandler(async (req, res) => {
 
     const prompt=generateFirstQuestionPrompt(type, role);
     const { text, updatedHistory } = await getGeminiResponse(prompt);
-
-    console.log(text);
-
     const response = text;
-
-    interview.geminiHistory=updatedHistory;
+      
+    interview.geminiHistory = updatedHistory;
     await interview.save();
 
-    console.log(response);
 
     if(!response){
         throw new ApiError(500,"Error generating first question");
