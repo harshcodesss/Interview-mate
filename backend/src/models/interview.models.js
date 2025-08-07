@@ -37,6 +37,19 @@ const interviewSchema = new Schema({
             required: true,
         },
     ],
+    geminiHistory: {
+        type: [
+          {
+            role: { type: String, enum: ["user", "model"] },
+            parts: [
+              {
+                text: { type: String, required: true },
+              },
+            ],
+          },
+        ],
+        default: [],
+      },
     startedAt: {
         type: Date,
     },

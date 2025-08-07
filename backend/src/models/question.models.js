@@ -21,15 +21,12 @@ const questionSchema = new Schema({
     },
     answer: {
         type: String,
-        required: true,
     },
     score: {
         type: Number,
-        required: true,
     },
     remarks: {
         type: String,
-        required: true,
     },
 },{
     timestamps: true,

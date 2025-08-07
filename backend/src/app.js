@@ -22,9 +22,11 @@ app.use(cookieParser())
 //import routes
 import userRouter from "./routes/user.routes.js"
 import healthRouter from "./routes/healthcheck.routes.js"
+import interviewRouter from "./routes/interview.routes.js"
 
 //routes
 app.use("/api/healthcheck",healthRouter)
 app.use("/api/users",userRouter)
+app.use("/api/interview",interviewRouter)
 
 export {app}
