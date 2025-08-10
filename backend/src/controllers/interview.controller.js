@@ -12,7 +12,7 @@ function generateFirstQuestionPrompt(type, role) {
   
   Your goal is to simulate a realistic interview:
   - Ask a total of 4 to 5 main questions tailored to the role and interview type.
-  - Begin by asking the **first main question**, along with 1–2 short and relevant follow-up questions.
+  - Begin by asking the **first main question**.
   - As the conversation continues, ask the next main question only after the candidate responds to the current one.
   - Keep each question clear and concise.
   - Do not go into deep technical detail too early; gradually build the difficulty.
@@ -21,7 +21,6 @@ function generateFirstQuestionPrompt(type, role) {
   Now, generate the **first main question and its follow-up(s)** to begin the interview. and only and only return question in response`;
   }
   
-
 
 const startInterview = asyncHandler(async (req, res) => {
     const { title, type, role } = req.body;
@@ -61,7 +60,6 @@ const startInterview = asyncHandler(async (req, res) => {
         interviewId,
         prompt: response,
         answer: "",
-        score: 0,
         remarks: "",
     });
 
@@ -80,5 +78,63 @@ const startInterview = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, "OK", interview, question));
 });
 
+const askQuestion = asyncHandler(async (req,res) =>{
+    const {answer} = req.body;
+    const interviewId=req.params.id;
 
-export { startInterview };
+    const interview =await Interview.findById(interviewId);
+    if(!interview){
+        throw new ApiError(404,"Interview not found");
+    }
+
+    const previousquestion = await Question.findById(interview.questions[interview.questions.length-1]);
+
+    if(!previousquestion){
+        throw new ApiError(404,"Question not found");
+    }
+    previousquestion.answer=answer;
+    await previousquestion.save();
+
+    interview.geminiHistory.push({
+        role: "user",
+        parts: [{ text: answer }]
+    });
+
+    const cleanHistory = interview.geminiHistory.map(msg => ({
+        role: msg.role,
+        parts: msg.parts.map(p => ({ text: p.text }))
+    }));
+
+    const {text,updatedHistory}= await getGeminiResponse(
+        `You are conducting a ${interview.type} interview for the role of ${interview.role}.
+        Based on the conversation so far, ask the next interview question.
+        Keep it concise and relevant.`,
+        cleanHistory
+    );
+
+    interview.geminiHistory=updatedHistory;
+    await interview.save();
+
+    const question = await Question.create({
+        interviewId,
+        prompt: text,
+        answer: "",
+        score: 0,
+        remarks: "",
+    });
+
+    await Interview.findByIdAndUpdate(
+        interviewId,
+        { $push: { questions: question._id } },
+        { new: true }
+    );
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, "Next question generated", question));
+});
+
+
+
+
+export { startInterview, askQuestion };

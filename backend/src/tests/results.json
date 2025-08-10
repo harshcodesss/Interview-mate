@@ -1,0 +1,18 @@
+[
+  {
+    "prompt": "Let's start with this:  Imagine you have a list of 10,000 numbers.  How would you find the three largest numbers in that list, and what is the most efficient way to do it in terms of time complexity, considering you have limited memory?  Explain your reasoning.\n",
+    "answer": "I would sort the list of the given number in assending order and then i will access the last three numbers of that list using their indices. Time complexity of the sort would O(nlogn) where n is 10000. further more i can optimise it by keeping three variables and iterate over my list updating my variables to found the three largest numbers."
+  },
+  {
+    "prompt": "That's a good approach, especially the optimized version. Now, let's say you need to find the *k* largest numbers in a list of *n* numbers, where *k* could be any number smaller than *n*.  How would you adapt your approach to handle this more general case, and how would the time complexity change?\n",
+    "answer": "Here keep the k variables are not optimal so optimal approach would be to sort the given list in assencding order than iterate last k element from the back of the list to find the k largest elements. Here Time complexity would be O(nlogn) for sorting the array and O(k) for find the elements."
+  },
+  {
+    "prompt": "Your sorting approach works well, but it's not the most efficient for finding only the *k* largest elements, especially if *k* is significantly smaller than *n*. Can you think of a way to solve this problem with a better time complexity than O(n log n)?  Hint: Consider using a data structure that helps you maintain the *k* largest elements seen so far efficiently.\n",
+    "answer": "Okay to optimise my sorting algorithm i will use the data structure PRIORITY QUEUES i'll maintain a min heap and keep iterate over the list if heap size is k and my current element is greater than the top element i'll pop the top element and push my current element other is heap size is less than k i'll push my current element."
+  },
+  {
+    "prompt": "Excellent! Using a min-heap is a much more efficient approach.  Now, let's shift gears slightly. Imagine you're debugging a program, and you notice that it's running significantly slower than expected. What are some common strategies you would use to identify the bottleneck(s) in the code's performance?\n",
+    "answer": ""
+  }
+]

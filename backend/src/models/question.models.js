@@ -22,9 +22,6 @@ const questionSchema = new Schema({
     answer: {
         type: String,
     },
-    score: {
-        type: Number,
-    },
     remarks: {
         type: String,
     },
