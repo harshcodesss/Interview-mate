@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { startInterview, askQuestion } from "../controllers/interview.controller.js";
+import { startInterview, askQuestion, endInterview } from "../controllers/interview.controller.js";
 import { verifyjWT } from "../middlewares/auth.middlewares.js";
 
 const router = Router();
 
 router.route("/start").post(verifyjWT,startInterview);
-router.route("/:id/ask").post(verifyjWT,askQuestion);
+router.route("/ask/:id").post(verifyjWT,askQuestion);
+router.route("/end/:id").post(verifyjWT,endInterview);
 
 export default router;
